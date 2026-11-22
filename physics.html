@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Physics · DH Surgical Twin</title>
+<meta name="description" content="GPU soft organs in double precision, frictional contact, grasping with tear limits, cutting, sutures, clips, energy and smoke, bleeding and bile, and breathing, all in SOFA.">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('dh-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body>
+<div class="top"><div class="wrap"><a class="brand" href="index.html">DH Surgical Twin<small>Digital Human · INSPIRE Lab, IIT Madras</small></a>
+<button class="theme" id="theme" type="button" aria-label="Switch light or dark theme">Dark</button></div></div>
+<nav class="tabs" aria-label="Sections"><div class="wrap">
+<a href="index.html">Overview</a>
+<a href="pipeline.html">CT to scene</a>
+<a href="patients.html">Your own patient</a>
+<a href="physics.html" aria-current="page">Physics</a>
+<a href="console.html">Robot console & masters</a>
+<a href="training.html">Training & assessment</a>
+<a href="teaching.html">Teaching layer</a>
+<a href="streaming.html">Streaming & XR</a>
+<a href="autonomy.html">Autonomy data</a>
+
+</div></nav>
+<main class="wrap">
+<header class="page">
+<h1>Physics</h1>
+<p class="lead">Every soft organ below the diaphragm is a live deformable body in SOFA, on the GPU in double precision.
+Our code builds the scene, moves the instruments under their limits and reads the results; the forces are SOFA's.</p>
+</header>
+
+<figure><video src="assets/vid/hero.mp4" poster="assets/vid/hero.jpg" muted autoplay loop playsinline preload="none" aria-label="The hook dissects fat in Calot's triangle while the left grasper holds the gallbladder"></video><figcaption>Hook dissection of Calot's triangle: frictional contact with the instruments' jaws and shafts, energy on the fat, the grasp holding the infundibulum while the abdomen breathes (2× speed).</figcaption></figure>
+
+<h2>Soft organs on the GPU</h2>
+<ul class="facts">
+<li>Corotational tetrahedra on a patched SofaCUDA in double precision: the liver, gallbladder, the Calot fat, the
+diaphragm, stomach, duodenum, small bowel, colon, spleen and kidney are live; the lungs, the abdominal wall and the
+training objects are replayed.</li>
+<li>The hollow viscera's content as a Tait pressure term; the bile ducts and the cystic artery as bead chains with
+springs.</li>
+<li>The live step adapts (1/60, 1/50, 1/40 or 0.03 s) to the finest the whole loop holds in real time, quality first.</li>
+<li>Runs repeat to the bit with address randomisation off.</li>
+</ul>
+
+<h2>Contact and grasping</h2>
+<ul class="facts">
+<li>Constraint-based frictional contact with the instruments' drawn jaws and shafts; the shaft never enters an organ.</li>
+<li>Grasping holds the tissue between the jaws; a bite tears only when its pull reaches the tissue's tear force,
+from the literature: liver 2.5 N, gallbladder 10 N, spleen 1.5 N, stomach 8 N, duodenum and small bowel 5 N, colon 4 N.</li>
+<li>Blunt dissection of the fat; a duct or artery pulled past its limit is avulsed on its own axial tension.</li>
+<li>Blunt objects never tear tissue.</li>
+</ul>
+<figure><video src="assets/vid/v_retract.mp4" poster="assets/vid/v_retract.jpg" muted autoplay loop playsinline preload="none" aria-label="The 4th arm retracts the fundus of the gallbladder over the liver"></video><figcaption>Fundus retraction by the 4th arm: 20 mm cephalad, about 4 N median, the gallbladder held by its bed bonds, nothing torn.</figcaption></figure>
+
+<h2>Cutting, clips and sutures</h2>
+<ul class="facts">
+<li>A cut is computed in a worker process and eased open on screen, with no pop or jump; scalpel strokes are smoothed
+in tissue coordinates, so the walls are not jagged. A cut organ's constraint compliance follows its new mesh.</li>
+<li>Robot scissors cut what is between their open blades.</li>
+<li>Clips close a duct or an artery; dividing between clips is judged by the task.</li>
+<li>Sutures hold: each stitch enters and leaves on the outer surface straight across the wound, a tied stitch closes
+the wound's depth near it, and a closed wound stops oozing.</li>
+</ul>
+<figure><video src="assets/vid/v_clip.mp4" poster="assets/vid/v_clip.jpg" muted autoplay loop playsinline preload="none" aria-label="A clip applier places clips on the cystic artery with a hologram guide; blood from an earlier bleed is visible"></video><figcaption>Clipping the cystic artery: the guide shows where the next clip goes; the blood from an earlier injury stays as a film on the tissue (1.5× speed).</figcaption></figure>
+
+<h2>Energy, smoke, bleeding and bile</h2>
+<ul class="facts">
+<li>The hook burns and coagulates where it touches; a guard can withhold the energy when a duct is too near.</li>
+<li>Cautery smoke rises from the burn and is evacuated within seconds.</li>
+<li>An incision oozes in proportion to its depth; a liver cut bleeds from the synthetic portal and hepatic vessels it
+crosses. Branches under 1 mm ooze and the hook seals them; larger ones bleed until sutured.</li>
+<li>A perforated gallbladder leaks bile at a rate set by the hole; a bite shuts most of it, a clip or a stitch closes it.</li>
+<li>The page draws the blood and bile the simulator loses as films that pool and drip.</li>
+</ul>
+<figure><video src="assets/vid/v_bleed.mp4" poster="assets/vid/v_bleed.jpg" muted autoplay loop playsinline preload="none" aria-label="The cystic artery stump bleeds after its clips slip; a grasper holds the stump and a clip stops the bleeding"></video><figcaption>An adverse event: the clips slip off the cystic artery's stump and it bleeds; a grasp on the stump slows it, a clip stops it, then suction (2.5× speed).</figcaption></figure>
+
+<h2>Breathing</h2>
+<p>The abdomen breathes. Each scene carries its own respiration (built by the pipeline), so the targets move under the
+instruments: in the cholecystectomy, breathing moves the cystic duct by 9–13 mm, and a hook press follows the tissue
+it was picked on.</p>
+<div class="next"><a class="btn" href="patients.html">← Your own patient</a><a class="btn" href="console.html">Robot console & masters →</a></div>
+<footer>© 2026 INSPIRE Lab, Indian Institute of Technology Madras. Not a medical device; for research and education only.
+Every image and video on this site comes from the simulator and its pipeline, with the release's procedural tissue look, on public
+CT data (TotalSegmentator dataset, CC BY 4.0) and demo accounts.</footer>
+</main>
+<script src="assets/site.js"></script>
+</body>
+</html>

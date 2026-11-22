@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Streaming and XR · DH Surgical Twin</title>
+<meta name="description" content="The browser renders the scene itself on a capable machine; phones, tablets and headsets can be streamed from the server's GPU instead, over WebRTC or from the native GPU view.">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('dh-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body>
+<div class="top"><div class="wrap"><a class="brand" href="index.html">DH Surgical Twin<small>Digital Human · INSPIRE Lab, IIT Madras</small></a>
+<button class="theme" id="theme" type="button" aria-label="Switch light or dark theme">Dark</button></div></div>
+<nav class="tabs" aria-label="Sections"><div class="wrap">
+<a href="index.html">Overview</a>
+<a href="pipeline.html">CT to scene</a>
+<a href="patients.html">Your own patient</a>
+<a href="physics.html">Physics</a>
+<a href="console.html">Robot console & masters</a>
+<a href="training.html">Training & assessment</a>
+<a href="teaching.html">Teaching layer</a>
+<a href="streaming.html" aria-current="page">Streaming & XR</a>
+<a href="autonomy.html">Autonomy data</a>
+
+</div></nav>
+<main class="wrap">
+<header class="page">
+<h1>Streaming and XR</h1>
+<p class="lead">On a capable computer the browser draws the scene from the physics frames. A weak device (a phone, a
+tablet, a headset) is streamed instead: the view is rendered on the server's GPU and the device only decodes video
+and sends its input back.</p>
+</header>
+
+<figure class="ui"><img src="assets/img/ui_sim_chole.jpg" alt="The simulator page as a desktop browser draws it" loading="lazy"><figcaption>The same page everywhere: on a desktop the browser draws it from the physics frames; on a phone, tablet or headset it can be rendered on the server and streamed.</figcaption></figure>
+
+<h2>Two ways to stream</h2>
+<div class="grid2">
+<div class="card"><h3>Server page</h3><p>A headless Chromium page on the server GPU renders the same page the
+desktop gets, with the full tissue look and the teaching layer. Pointer, wheel and keys over the device's view are
+injected into it as real input; panel actions are replayed there. Video goes out over WebRTC, or as H.264 chunks over
+the page's WebSocket where WebRTC cannot connect.</p></div>
+<div class="card"><h3>Native GPU view</h3><p>A separate process renders with EGL and hands the image to NVIDIA's
+encoder through CUDA-GL interop, so the frames never leave the GPU between render and encoder. The device draws the 2D
+teaching layer over the video itself.</p></div>
+</div>
+
+<h2>Flow control</h2>
+<ul class="facts">
+<li>Newest wins: a late frame is useless, so the server encodes no new frame while the oldest unacknowledged one is
+older than the link's minimum round trip plus 80 ms.</li>
+<li>The bitrate adapts between 0.3 and 6 Mbit/s; key frames on request and about every 10 s.</li>
+<li>A waiting mouse move is replaced by the newest one; presses, releases and keys are never dropped.</li>
+<li>Outside the local network a TURN relay helps WebRTC through NAT; it relays only to the simulator's machine.</li>
+</ul>
+
+<h2>Measured</h2>
+<div class="tw"><table>
+<tr><th>What</th><th>Result</th></tr>
+<tr><td>Key to photon, same machine</td><td>12–37 ms</td></tr>
+<tr><td>Phone over the internet</td><td>about 57–60 fps at 5 Mbit/s</td></tr>
+<tr><td>Touch to instrument on a phone (screen recordings)</td><td>median 148 ms over home Wi-Fi, 199 ms over mobile data and a VPN</td></tr>
+</table></div>
+
+<h2>XR</h2>
+<p>WebXR headsets work in both modes; in headset VR the page renders locally, because head motion needs under 20 ms.
+XR controllers can act as the robot's masters.</p>
+<div class="next"><a class="btn" href="teaching.html">← Teaching layer</a><a class="btn" href="autonomy.html">Autonomy data →</a></div>
+<footer>© 2026 INSPIRE Lab, Indian Institute of Technology Madras. Not a medical device; for research and education only.
+Every image and video on this site comes from the simulator and its pipeline, with the release's procedural tissue look, on public
+CT data (TotalSegmentator dataset, CC BY 4.0) and demo accounts.</footer>
+</main>
+<script src="assets/site.js"></script>
+</body>
+</html>

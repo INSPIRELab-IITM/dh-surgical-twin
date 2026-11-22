@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CT to patient scene · DH Surgical Twin</title>
+<meta name="description" content="How a CT scan becomes a simulated abdomen: open TotalSegmentator tasks, fused labels, tetrahedral meshes and the anatomy CT does not show.">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('dh-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body>
+<div class="top"><div class="wrap"><a class="brand" href="index.html">DH Surgical Twin<small>Digital Human · INSPIRE Lab, IIT Madras</small></a>
+<button class="theme" id="theme" type="button" aria-label="Switch light or dark theme">Dark</button></div></div>
+<nav class="tabs" aria-label="Sections"><div class="wrap">
+<a href="index.html">Overview</a>
+<a href="pipeline.html" aria-current="page">CT to scene</a>
+<a href="patients.html">Your own patient</a>
+<a href="physics.html">Physics</a>
+<a href="console.html">Robot console & masters</a>
+<a href="training.html">Training & assessment</a>
+<a href="teaching.html">Teaching layer</a>
+<a href="streaming.html">Streaming & XR</a>
+<a href="autonomy.html">Autonomy data</a>
+
+</div></nav>
+<main class="wrap">
+<header class="page">
+<h1>CT to patient scene</h1>
+<p class="lead">One pipeline turns a contrast CT of the abdomen into a scene SOFA can run: the organs the CT shows,
+segmented with the open TotalSegmentator tasks, and the structures it does not show, synthesised to fit between them.</p>
+</header>
+
+<figure class="ui"><img src="assets/img/ui_sim_chole.jpg" alt="The simulator page in its desk view: the reference patient's abdomen from CT, with the ducts, arteries and the hepatoduodenal ligament labelled" loading="lazy"><figcaption>The reference patient (subject s1379 of the TotalSegmentator dataset) in the simulator's desk view: organs from the CT, the synthesised ducts, cystic artery and fat, and the labels of the teaching layer.</figcaption></figure>
+
+<h2>From voxels to meshes</h2>
+<ul class="facts">
+<li><b>Segment.</b> TotalSegmentator's open tasks only: <code>total</code> plus body, vertebrae, trunk cavities,
+abdominal muscles, liver vessels, liver segments and lung vessels. No licensed task is used, so the trunk has no
+separate skin or subcutaneous-fat labels and the heart is one label.</li>
+<li><b>Fuse</b> the masks into one label map, extract surfaces and build tetrahedral meshes for every soft organ.</li>
+<li><b>Check eligibility</b>: a liver of at least 500 ml and a gallbladder of at least 5 ml; liver, gallbladder,
+duodenum and stomach found and not cut by the scan's edges.</li>
+</ul>
+
+<figure><img src="assets/img/pv_segmentation.jpg" alt="Coronal and axial CT slices through the gallbladder with the segmented organs coloured" loading="lazy"><figcaption>The open TotalSegmentator tasks on subject s1379: coronal and axial slices through the gallbladder, each organ coloured.</figcaption></figure>
+
+<h2>What CT does not show</h2>
+<p>The small structures a surgeon works on in a cholecystectomy are below CT's resolution or not contrasted. The
+pipeline synthesises them from the patient's own organs:</p>
+<ul class="facts">
+<li><b>The biliary tree</b>: the common, cystic and hepatic ducts and the cystic artery, <em>routed</em> through
+the free space between the organs on a 1 mm signed-distance grid (a minimum-cost path, each bead's surface kept
+1 mm off every organ): a supraduodenal junction, the common duct behind the duodenum to the papilla, the artery
+from beside the common hepatic duct, at least 6.5 mm from the cystic duct, into the gallbladder's free surface.</li>
+<li><b>The hepatocystic fat</b> of Calot's triangle as a sheath round each duct and the artery, which the hook
+dissects.</li>
+<li><b>The diaphragm, the falciform ligament and the greater omentum.</b></li>
+<li><b>The small bowel</b> traced as self-colliding tubes whose loops slide on each other.</li>
+<li><b>The liver's portal and hepatic venous trees</b>: a cut bleeds from the vessels it crosses.</li>
+<li><b>Breathing, organ attachments and the gallbladder's bed bonds</b>, each holding a small surface patch.</li>
+</ul>
+
+<figure><video src="assets/vid/v_retract.mp4" poster="assets/vid/v_retract.jpg" muted autoplay loop playsinline preload="none" aria-label="The laparoscope's view while the 4th arm lifts the gallbladder's fundus over the liver"></video><figcaption>The synthesised hepatocystic anatomy under load: the 4th arm lifts the fundus 20 mm cephalad over the liver while the routed cystic duct and artery, the common bile duct and the right hepatic artery stay labelled.</figcaption></figure>
+<div class="grid2"><figure><img src="assets/img/pv_model.jpg" alt="The patient's scene from the front: liver, stomach, small bowel loops and colon" loading="lazy"><figcaption>The built scene from the front: the small bowel traced as tubes, the colon, stomach and liver.</figcaption></figure><figure><img src="assets/img/pv_triangle.jpg" alt="Close view of Calot's triangle: the gallbladder, the cystic duct and the cystic artery" loading="lazy"><figcaption>Calot's triangle in the built scene: the gallbladder with the routed cystic duct and artery.</figcaption></figure></div>
+
+<h2>Anatomy variants and patients</h2>
+<p>The same pipeline builds every scene in the release from the public TotalSegmentator dataset (CC BY 4.0): the
+male reference patient (subject s1379), a second male (s1124) and a female patient (s1404), the cholecystectomy's
+four anatomies of Calot's triangle and a double cystic artery, the appendectomy and the basic-skills boards.</p>
+<div class="grid2"><figure><img src="assets/img/te_cvs.jpg" alt="Laparoscope view of the cleared hepatocystic triangle with cystic duct and artery labelled" loading="lazy"><figcaption>The routed cystic duct and artery and the Calot fat sheath, seen through the docked laparoscope after dissection.</figcaption></figure><figure class="ui"><img src="assets/img/ui_sim_appy.jpg" alt="The appendectomy scene in the desk view: caecum, appendix, its base and the appendicular artery labelled" loading="lazy"><figcaption>The appendectomy built from the same CT: the appendix, its base, the appendicular artery and the caecum's taeniae.</figcaption></figure></div>
+
+<h2>Ports</h2>
+<p>A patient's ports are chosen on the exposed anatomy: the abdomen insufflated, the laparoscope docked, the fundus
+retracted and the neck held. Every skin point's straight lines to the targets (the hook's ring, the bed, the neck,
+the fundus, the laparoscope's view) are scored with every organ as an obstacle, under the layout rules of the robot's
+arms.</p>
+<div class="next"><a class="btn" href="index.html">← Overview</a><a class="btn" href="patients.html">Your own patient →</a></div>
+<footer>© 2026 INSPIRE Lab, Indian Institute of Technology Madras. Not a medical device; for research and education only.
+Every image and video on this site comes from the simulator and its pipeline, with the release's procedural tissue look, on public
+CT data (TotalSegmentator dataset, CC BY 4.0) and demo accounts.</footer>
+</main>
+<script src="assets/site.js"></script>
+</body>
+</html>

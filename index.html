@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DH Surgical Twin · Digital Human surgical simulator</title>
+<meta name="description" content="A patient-specific, real-time surgical simulator built from CT on SOFA, for robotic and laparoscopic training: physics, robot console, training, teaching, streaming and autonomy data.">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('dh-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body>
+<div class="top"><div class="wrap"><a class="brand" href="index.html">DH Surgical Twin<small>Digital Human · INSPIRE Lab, IIT Madras</small></a>
+<button class="theme" id="theme" type="button" aria-label="Switch light or dark theme">Dark</button></div></div>
+<nav class="tabs" aria-label="Sections"><div class="wrap">
+<a href="index.html" aria-current="page">Overview</a>
+<a href="pipeline.html">CT to scene</a>
+<a href="patients.html">Your own patient</a>
+<a href="physics.html">Physics</a>
+<a href="console.html">Robot console & masters</a>
+<a href="training.html">Training & assessment</a>
+<a href="teaching.html">Teaching layer</a>
+<a href="streaming.html">Streaming & XR</a>
+<a href="autonomy.html">Autonomy data</a>
+
+</div></nav>
+<main class="wrap">
+<header class="page">
+  <h1>DH (Digital Human) Surgical Twin: a patient-specific, real-time surgical simulator</h1>
+  <p class="lead">From a patient's CT scan to a live abdomen you can operate on. Every soft organ below the diaphragm
+  is a deformable body simulated in real time in <a href="https://www.sofa-framework.org" target="_blank" rel="noopener noreferrer">SOFA</a> on the GPU, for
+  training in robotic and laparoscopic surgery.</p>
+  <div class="btns">
+    <a class="btn primary" href="https://github.com/INSPIRELab-IITM/dh-surgical-twin" target="_blank" rel="noopener noreferrer">GitHub (code coming soon)</a>
+    
+    <a class="btn" href="#cite">Cite</a>
+  </div>
+  <figure>
+    <video src="assets/vid/hero.mp4" poster="assets/vid/hero.jpg" muted autoplay loop playsinline preload="metadata"
+      aria-label="Laparoscope view of a scripted robotic cholecystectomy: the hook dissects the fat of Calot's triangle"></video>
+    <figcaption>A scripted robotic cholecystectomy on the reference patient (open CT data), recorded from the simulator page with the release's procedural tissue look and the teaching layer: the left grasper holds the infundibulum, the hook dissects the fat of Calot's triangle (2× speed).</figcaption>
+  </figure>
+</header>
+
+<h2>Capabilities</h2>
+<div class="grid">
+  <a class="card" href="pipeline.html"><img src="assets/img/t_pipeline.jpg" alt="" loading="lazy"><h3>CT to patient scene</h3><p>Segments the CT with the open
+  TotalSegmentator tasks, builds organ meshes and synthesises what CT does not show: the bile ducts and cystic artery
+  routed between the organs, the fat of Calot's triangle, the falciform ligament, omentum, bowel tubes, liver vessels
+  and organ attachments.</p><span class="more">Pipeline →</span></a>
+  <a class="card" href="patients.html"><img src="assets/img/t_patients.jpg" alt="" loading="lazy"><h3>Your own patient</h3><p>Upload a NIfTI file or a DICOM
+  series. It is validated, de-identified, segmented and built into a cholecystectomy with its own port plan, previewed,
+  and shared with your trainees.</p><span class="more">Upload →</span></a>
+  <a class="card" href="physics.html"><img src="assets/img/t_physics.jpg" alt="" loading="lazy"><h3>Real-time physics</h3><p>Corotational tetrahedra on the GPU
+  in double precision, frictional contact, grasping with published tear limits, blunt dissection, cutting, sutures,
+  clips, energy, bleeding, bile leaks and breathing.</p><span class="more">Physics →</span></a>
+  <a class="card" href="console.html"><img src="assets/img/t_console.jpg" alt="" loading="lazy"><h3>Robot console and masters</h3><p>Two wristed
+  instruments, a fourth arm and a 30° laparoscope. Drive them from a keyboard and mouse, a 6D gizmo, a phone, XR
+  controllers, or your own device through an open master protocol with force feedback.</p><span class="more">Console →</span></a>
+  <a class="card" href="training.html"><img src="assets/img/t_training.jpg" alt="" loading="lazy"><h3>Training and assessment</h3><p>Basic skills with a
+  proficiency curriculum, scored cholecystectomy and appendectomy, short step cases with adverse events, attempt
+  review and an instructor's cohort view.</p><span class="more">Training →</span></a>
+  <a class="card" href="teaching.html"><img src="assets/img/t_teaching.jpg" alt="" loading="lazy"><h3>Teaching layer</h3><p>Step banner and checklist, the
+  critical view of safety's criteria, structures tinted with their hidden course, clip and scissors guides, and event
+  notes with the points lost.</p><span class="more">Teaching →</span></a>
+  <a class="card" href="streaming.html"><img src="assets/img/t_streaming.jpg" alt="" loading="lazy"><h3>Streaming and XR</h3><p>The browser draws the scene
+  from the physics frames; phones, tablets and headsets can be streamed from the server's GPU instead. WebXR headsets
+  work in both modes.</p><span class="more">Streaming →</span></a>
+  <a class="card" href="autonomy.html"><img src="assets/img/t_autonomy.jpg" alt="" loading="lazy"><h3>Autonomy data</h3><p>A Gym-style environment and data
+  collection in the LeRobot layout for learning-based surgical autonomy research.</p><span class="more">Autonomy →</span></a>
+</div>
+
+<h2>Views</h2>
+<div class="grid2">
+  <figure><img src="assets/view2.jpg" alt="Another laparoscope view of the gallbladder and the hepatocystic fat" loading="lazy"></figure>
+  <figure><img src="assets/view3.jpg" alt="Laparoscope view in a second, female patient" loading="lazy"></figure>
+</div>
+<p class="cap">More views: the reference patient and a second (female) patient built by the same pipeline.</p>
+
+<h2>Performance</h2>
+<p>Measured on an RTX PRO 5000 Blackwell, Accurate quality, dt 0.03 s, every abdominal organ live:</p>
+<div class="tw"><table>
+  <tr><th>Scene</th><th>This release (SOFA + patched SofaCUDA)</th></tr>
+  <tr><td>Appendectomy, at rest</td><td>9.3 ms a step (real time)</td></tr>
+  <tr><td>Peg transfer, at rest</td><td>13.8 ms a step (real time)</td></tr>
+  <tr><td>Cholecystectomy, at rest / grasp-pull</td><td>75–94 / 77–246 ms a step (about 0.1–0.4× real time)</td></tr>
+</table></div>
+<p class="note">The real-time cholecystectomy uses our separate GPU solver plugin, which is not part of this release
+(with it: 14 ms a step at rest, 16 ms in the pull). Every scene still builds and runs with SOFA's own components.
+The recordings on this site were made with that plugin; the look is the release's.</p>
+
+<h2 id="install">Code release</h2>
+<p class="note">The source code (release v0.2) will be published in the
+<a href="https://github.com/INSPIRELab-IITM/dh-surgical-twin" target="_blank" rel="noopener noreferrer">GitHub repository</a> soon. Watch it to be notified.</p>
+<p>It will need Linux x86-64, an NVIDIA GPU with CUDA, 16 GB of RAM (32 GB recommended) and SOFA v25.12.00 with
+SofaPython3; a setup script applies our SofaCUDA patches and builds everything.</p>
+
+<h2>Licence</h2>
+<p class="note">The licences below are proposed, pending review by the IIT Madras IP cell. The software is source-available for non-commercial use; it is not open source in the OSI sense.</p>
+<ul>
+  <li><b>Our code:</b> <a href="https://polyformproject.org/licenses/noncommercial/1.0.0" target="_blank" rel="noopener noreferrer">PolyForm Noncommercial
+  1.0.0</a>. Research, teaching and personal study are allowed; commercial use needs a separate licence from IIT
+  Madras. Licensing contact:<br><img class="contact" src="assets/contact.png" alt="Licensing contact e-mail addresses (image)" width="333" height="88"></li>
+  <li><b>SofaCUDA patches:</b> LGPL-2.1, as SOFA.</li>
+  <li><b>Data:</b> no patient data ships; scene data published later will be CC BY-NC 4.0.</li>
+  <li>Patents pending (IIT Madras).</li>
+  <li>Third-party material and its licences: THIRD_PARTY.md in the repository.</li>
+</ul>
+
+<h2 id="cite">Cite</h2>
+<pre><code>@software{dh_surgical_twin_2026,
+  title   = {DH Surgical Twin: a patient-specific, real-time surgical simulator on SOFA},
+  author  = {{INSPIRE Lab, Indian Institute of Technology Madras}},
+  year    = {2026},
+  version = {0.2.0},
+  url     = {https://github.com/INSPIRELab-IITM/dh-surgical-twin}
+}</code></pre>
+
+<h2>Acknowledgements</h2>
+<p>Built on <a href="https://www.sofa-framework.org" target="_blank" rel="noopener noreferrer">SOFA</a> and SofaPython3,
+<a href="https://github.com/wasserth/TotalSegmentator" target="_blank" rel="noopener noreferrer">TotalSegmentator</a> (Wasserthal et al., 2023) and its CT
+dataset, LapGym's instrument meshes (Scheikl et al., 2023) and three.js. The tissue look's colours were checked against
+CC BY 4.0 surgical video frames from the Open-H collection; no video pixels are part of the release.</p>
+<div class="next"><span></span><a class="btn" href="pipeline.html">CT to scene →</a></div>
+<footer>© 2026 INSPIRE Lab, Indian Institute of Technology Madras. Not a medical device; for research and education only.
+Every image and video on this site comes from the simulator and its pipeline, with the release's procedural tissue look, on public
+CT data (TotalSegmentator dataset, CC BY 4.0) and demo accounts.</footer>
+</main>
+<script src="assets/site.js"></script>
+</body>
+</html>

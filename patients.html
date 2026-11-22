@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your own patient · DH Surgical Twin</title>
+<meta name="description" content="Upload a CT as NIfTI or a DICOM zip; the simulator validates, de-identifies, segments and builds that patient's cholecystectomy, previews it and shares it with trainees.">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('dh-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body>
+<div class="top"><div class="wrap"><a class="brand" href="index.html">DH Surgical Twin<small>Digital Human · INSPIRE Lab, IIT Madras</small></a>
+<button class="theme" id="theme" type="button" aria-label="Switch light or dark theme">Dark</button></div></div>
+<nav class="tabs" aria-label="Sections"><div class="wrap">
+<a href="index.html">Overview</a>
+<a href="pipeline.html">CT to scene</a>
+<a href="patients.html" aria-current="page">Your own patient</a>
+<a href="physics.html">Physics</a>
+<a href="console.html">Robot console & masters</a>
+<a href="training.html">Training & assessment</a>
+<a href="teaching.html">Teaching layer</a>
+<a href="streaming.html">Streaming & XR</a>
+<a href="autonomy.html">Autonomy data</a>
+
+</div></nav>
+<main class="wrap">
+<header class="page">
+<h1>Your own patient</h1>
+<p class="lead">A clinician uploads a CT; the simulator builds that patient's laparoscopic cholecystectomy, with its own
+port plan, and opens it for practice, training and assessment. The whole pipeline runs on the server, one case at a
+time.</p>
+</header>
+
+<figure class="ui"><img src="assets/img/ui_upload.jpg" alt="The My patients page: a drop zone for a CT, a label field, the anonymisation confirmation and the Upload and build button" loading="lazy"><figcaption>My patients: drop a NIfTI file or a DICOM .zip, add an optional label (no names), confirm the scan is anonymised, upload. Shown with a demo account and the open-data CT of subject s1379.</figcaption></figure>
+
+<h2>The steps</h2>
+<div class="tw"><table>
+<tr><th>Stage</th><th>What happens</th></tr>
+<tr><td>Upload</td><td>A NIfTI file or a DICOM series as one .zip, with an optional label (no names) and the uploader's
+confirmation that the scan is anonymised data. A rejected scan says why at once.</td></tr>
+<tr><td>Anonymise</td><td>The zip is extracted safely, the CT series chosen, validated and de-identified; scans finer
+than 1.5 mm are resampled once.</td></tr>
+<tr><td>Segment</td><td>TotalSegmentator's open tasks, one at a time on the GPU, memory-capped.</td></tr>
+<tr><td>Eligibility</td><td>Liver and gallbladder volumes; the scan covers the liver, gallbladder, duodenum and stomach.</td></tr>
+<tr><td>Fuse, surfaces, scene</td><td>The cholecystectomy template on the patient: tetrahedral meshes, the routed bile
+ducts and artery, Calot's fat sheath, breathing, the falciform ligament.</td></tr>
+<tr><td>Anatomy</td><td>The traced anatomy: the small bowel as tubes, the omentum, finer stomach and duodenum.</td></tr>
+<tr><td>Runtime check</td><td>The scene runs headless as the simulator runs it, insufflated; an unstable build fails.</td></tr>
+<tr><td>Ports</td><td>The patient's own port plan, chosen on the exposed anatomy.</td></tr>
+<tr><td>Checks and previews</td><td>Required organs and chains, duct beads inside organs, overlaps; three pictures and an
+interactive 3D model.</td></tr>
+</table></div>
+
+<div class="grid2"><figure class="ui"><img src="assets/img/ui_case.jpg" alt="The patient's page: every pipeline stage ticked with its time, the scan's facts, the de-identification and the organ volumes" loading="lazy"><figcaption>The patient's page: each stage with its time, the scan, what de-identification found and kept, the organ volumes (the open-data CT of subject s1379, uploaded through the page by a demo account).</figcaption></figure><figure class="ui"><img src="assets/img/ui_case_model.jpg" alt="The patient's interactive 3D model with an organ legend, and three preview pictures" loading="lazy"><figcaption>The patient's 3D model (drag to turn, a legend to hide organs), the segmentation over the CT, the scene from the front and Calot's triangle, and the checks.</figcaption></figure></div>
+
+<h2>Who sees a patient</h2>
+<ul class="facts">
+<li>A case is its uploader's and the admins' only; anyone else gets "not found", for its scene too.</li>
+<li>The uploader (a clinician) or an admin can share a ready patient with chosen trainees: it appears on their
+Practice and Assess pages, its scene theirs to load, nothing else of it.</li>
+<li>Uploads are off by default: patient data needs your own ethics approval. The identifiers are stripped on arrival
+either way.</li>
+</ul>
+<figure class="ui"><img src="assets/img/ui_patients_list.jpg" alt="A ready patient card on the My patients page and the note on what happens to a scan" loading="lazy"><figcaption>Once ready, the patient opens in the simulator (Practise, Train, Assess) and is listed with what happens to a scan.</figcaption></figure>
+<div class="next"><a class="btn" href="pipeline.html">← CT to scene</a><a class="btn" href="physics.html">Physics →</a></div>
+<footer>© 2026 INSPIRE Lab, Indian Institute of Technology Madras. Not a medical device; for research and education only.
+Every image and video on this site comes from the simulator and its pipeline, with the release's procedural tissue look, on public
+CT data (TotalSegmentator dataset, CC BY 4.0) and demo accounts.</footer>
+</main>
+<script src="assets/site.js"></script>
+</body>
+</html>

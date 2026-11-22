@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teaching layer · DH Surgical Twin</title>
+<meta name="description" content="The step banner and checklist, the critical view of safety's criteria, tinted structures with their hidden course, clip and scissors guides, and event notes drawn over the laparoscope's view.">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('dh-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body>
+<div class="top"><div class="wrap"><a class="brand" href="index.html">DH Surgical Twin<small>Digital Human · INSPIRE Lab, IIT Madras</small></a>
+<button class="theme" id="theme" type="button" aria-label="Switch light or dark theme">Dark</button></div></div>
+<nav class="tabs" aria-label="Sections"><div class="wrap">
+<a href="index.html">Overview</a>
+<a href="pipeline.html">CT to scene</a>
+<a href="patients.html">Your own patient</a>
+<a href="physics.html">Physics</a>
+<a href="console.html">Robot console & masters</a>
+<a href="training.html">Training & assessment</a>
+<a href="teaching.html" aria-current="page">Teaching layer</a>
+<a href="streaming.html">Streaming & XR</a>
+<a href="autonomy.html">Autonomy data</a>
+
+</div></nav>
+<main class="wrap">
+<header class="page">
+<h1>Teaching layer</h1>
+<p class="lead">Drawn over the 3D view in every scene and every view (desk, laparoscope, console, streamed device).
+It is display only: it reads the task state the server already sends and never changes the physics.</p>
+</header>
+
+<figure><video src="assets/vid/v_cvs.mp4" poster="assets/vid/v_cvs.jpg" muted autoplay loop playsinline preload="none" aria-label="The laparoscope view with the step banner, the step list, the critical view of safety bars and labelled structures while the hook dissects"></video><figcaption>Achieving the critical view of safety: the step banner and list on the left, the three criteria's bars, the ducts and arteries tinted and labelled, the gallbladder outlined (2× speed).</figcaption></figure>
+
+<h2>What it draws</h2>
+<div class="grid">
+<div class="card"><h3>Step banner and list</h3><p>"Step n of m" with a one-line instruction at the top; the
+task's checklist on the left: done, current (pulsing) and to do.</p></div>
+<div class="card"><h3>Critical view of safety</h3><p>The three criteria, each with a bar: the triangle cleared
+(≥ 80 %), the lower third of the gallbladder off its bed (≥ 80 %), two structures exposed (≥ 70 %), ticked as each is
+met.</p></div>
+<div class="card"><h3>Structures</h3><p>Each duct and artery (and the appendix) tinted where it shows and its
+course drawn faintly where tissue hides it, labelled with its state; the gallbladder outlined; the hepatocystic
+triangle shaded until the critical view.</p></div>
+<div class="card"><h3>Clip and scissors guides</h3><p>In a clip or divide step, a translucent clip applier or
+scissors through the port of the arm that holds one, its jaws across the vessel where the next clip or cut goes.</p></div>
+<div class="card"><h3>Event notes</h3><p>Bleeding, bile leaks, clips placed, structures divided, thermal injuries,
+tears, the critical view: a marker that follows the tissue, a note and the points lost.</p></div>
+<div class="card"><h3>Instrument names</h3><p>Each instrument by its arm at the bottom corners, "energy" while it
+burns, "holding &lt;organ&gt;" while it holds.</p></div>
+</div>
+
+<div class="grid2"><figure><img src="assets/img/te_clip.jpg" alt="A hologram clip applier and clip shown where the next clip goes on the cystic artery" loading="lazy"><figcaption>The clip guide: a translucent clip applier and clip where the next clip goes.</figcaption></figure><figure><img src="assets/img/te_event.jpg" alt="An event note for an adverse event: the clips slipped off the artery stump" loading="lazy"><figcaption>An event note: a marker on the tissue, the note and what to do.</figcaption></figure></div>
+
+<h2>Display anatomy</h2>
+<p>From each scene's own CT meshes, the page also draws the retroperitoneal floor behind and below the liver (blood
+pools there, in Morison's pouch), the right hepatic artery behind the common hepatic duct (to preserve), and a
+translucent hepatoduodenal ligament. None of it reaches the physics.</p>
+
+<h2>Switches</h2>
+<ul class="facts">
+<li>On in guided steps; in an assessment the teaching part (banner, list, highlights, guides) is off and the event
+notes and instrument names stay.</li>
+<li>One scale for every screen, laid out in the part of the view no control covers; the same colours in light and
+dark themes.</li>
+<li>In a streamed view the server page draws it into its video frame.</li>
+</ul>
+<div class="next"><a class="btn" href="training.html">← Training & assessment</a><a class="btn" href="streaming.html">Streaming & XR →</a></div>
+<footer>© 2026 INSPIRE Lab, Indian Institute of Technology Madras. Not a medical device; for research and education only.
+Every image and video on this site comes from the simulator and its pipeline, with the release's procedural tissue look, on public
+CT data (TotalSegmentator dataset, CC BY 4.0) and demo accounts.</footer>
+</main>
+<script src="assets/site.js"></script>
+</body>
+</html>

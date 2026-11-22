@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Robot console and masters · DH Surgical Twin</title>
+<meta name="description" content="A da Vinci-style console with two wristed instruments, a 4th arm and a 30-degree laparoscope, driven from a keyboard, a 6D gizmo, a phone, XR controllers or your own device through master protocol v2 with force feedback.">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('dh-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body>
+<div class="top"><div class="wrap"><a class="brand" href="index.html">DH Surgical Twin<small>Digital Human · INSPIRE Lab, IIT Madras</small></a>
+<button class="theme" id="theme" type="button" aria-label="Switch light or dark theme">Dark</button></div></div>
+<nav class="tabs" aria-label="Sections"><div class="wrap">
+<a href="index.html">Overview</a>
+<a href="pipeline.html">CT to scene</a>
+<a href="patients.html">Your own patient</a>
+<a href="physics.html">Physics</a>
+<a href="console.html" aria-current="page">Robot console & masters</a>
+<a href="training.html">Training & assessment</a>
+<a href="teaching.html">Teaching layer</a>
+<a href="streaming.html">Streaming & XR</a>
+<a href="autonomy.html">Autonomy data</a>
+
+</div></nav>
+<main class="wrap">
+<header class="page">
+<h1>Robot console and master devices</h1>
+<p class="lead">A console with two wristed instruments, a 4th arm and a 30° laparoscope docked on its field. Any
+master that speaks the open protocol drives it under the same limits: motion scaling, the arms' speed limits, the
+remote centre at each port, the shaft and tissue limits.</p>
+</header>
+
+<figure class="ui"><img src="assets/img/ui_sim_appy.jpg" alt="The simulator page with each arm's instrument column, the 4th arm column and the tool bar" loading="lazy"><figcaption>The simulator page (console off): each arm's instrument column (left, right, 4th arm with the swap), the tool bar, the task's steps and the live tissue force.</figcaption></figure>
+
+<h2>The console</h2>
+<ul class="facts">
+<li><b>Docking.</b> The robot docks itself after insufflation: the laparoscope aimed at its focus with the lens kept
+clear of tissue, the instruments where their shafts hide the least of the view, organs moved out of the ports'
+corridors.</li>
+<li><b>Console on or off.</b> With the console on, the masters drive the instruments in the laparoscope's frame; with
+it off, the same masters drive them in the page's 3D view. Only the view and interaction change.</li>
+<li><b>The 4th arm.</b> The arm swap (the pedal, a key, a held button on a headset) hands one master the 4th arm; the
+arm left behind is locked.</li>
+<li><b>Instruments</b>, chosen per arm: grasper, Maryland dissector, needle driver, scissors, monopolar scissors, clip applier, hook, bipolar, suction and spatula.
+Released instruments never jump; the shafts limit by force, not as walls.</li>
+</ul>
+
+<h2>Master devices</h2>
+<div class="grid2"><figure class="ui"><img src="assets/img/ui_master.jpg" alt="The keyboard and mouse master page with key bindings and both arms" loading="lazy"><figcaption>Keyboard + mouse master (/master): both hands, clutch, camera, energy and grip; the same buttons on every master.</figcaption></figure><figure class="ui"><img src="assets/img/ui_gizmo.jpg" alt="The 6D gizmo master: a 3D gizmo with arrows and rings to move and turn the instrument" loading="lazy"><figcaption>6D gizmo (/gizmo): drag an arrow to move, a ring to turn.</figcaption></figure></div><div class="split"><figure class="ui"><img src="assets/img/ui_phone.jpg" alt="The phone master page" loading="lazy" style="max-width:300px;margin:auto"></figure><div><h3>A phone as a master</h3><p class="cap" style="font-size:15px">Turning the phone turns the instrument's wrist; with WebXR AR tracking, moving the phone moves the instrument. Tap to grip, hold to clutch, hold for the camera or energy pedal. The phone vibrates as the jaws take hold and as the force rises past 8 N. XR controllers and lab devices speak the same protocol.</p></div></div>
+
+<h2>Master protocol v2</h2>
+<p>A lab device sends one JSON message per sample (a hand pose per arm, the gripper, a clutch, the pedals) over a
+WebSocket or UDP. A small standard-library Python stub implements it; a device program signs in through the browser
+(a device-pairing page), so no password is ever stored in it.</p>
+<pre><code>import master_device_stub_ws as md
+
+md.connect("sim.example.org")              # the first time: sign in via the link it shows
+while True:
+    T, raw, clutch = read_my_device()       # your driver
+    md.send_to_sim("left", pose=T, grip_raw=raw, clutch=clutch)
+    md.set_pedals(camera=False, clutch=False, cautery=False)</code></pre>
+<ul class="facts">
+<li><b>Hello and welcome.</b> A device negotiates its channels (force, torque, grasp, contact, organ, tip, state), its
+arms (the 4th arm included), rate, frame (device, view or world), gain, motion scaling and saturation.</li>
+<li><b>Force feedback.</b> Opt-in per device; the forces are SOFA's, read after the step, so the physics is the same
+with or without a subscriber.</li>
+<li><b>Several masters.</b> One master per hand: the first keeps it while it streams, the other is ignored and both
+are told; the page warns and offers "take control".</li>
+<li><b>Compatibility.</b> Unknown fields are ignored; a device gets only the channels it asked for; a device that
+sends no hello is a version 1 master and drives as before.</li>
+<li><b>A simulated master</b> speaks the protocol as a real device does, for end-to-end tests without hardware, and a
+latency page measures each device from a camera recording.</li>
+</ul>
+<div class="next"><a class="btn" href="physics.html">← Physics</a><a class="btn" href="training.html">Training & assessment →</a></div>
+<footer>© 2026 INSPIRE Lab, Indian Institute of Technology Madras. Not a medical device; for research and education only.
+Every image and video on this site comes from the simulator and its pipeline, with the release's procedural tissue look, on public
+CT data (TotalSegmentator dataset, CC BY 4.0) and demo accounts.</footer>
+</main>
+<script src="assets/site.js"></script>
+</body>
+</html>

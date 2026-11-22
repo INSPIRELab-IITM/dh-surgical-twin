@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Training and assessment · DH Surgical Twin</title>
+<meta name="description" content="A proficiency curriculum from basic robotic skills to a scored cholecystectomy, step cases with adverse events, attempt review and the instructor's cohort view.">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('dh-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body>
+<div class="top"><div class="wrap"><a class="brand" href="index.html">DH Surgical Twin<small>Digital Human · INSPIRE Lab, IIT Madras</small></a>
+<button class="theme" id="theme" type="button" aria-label="Switch light or dark theme">Dark</button></div></div>
+<nav class="tabs" aria-label="Sections"><div class="wrap">
+<a href="index.html">Overview</a>
+<a href="pipeline.html">CT to scene</a>
+<a href="patients.html">Your own patient</a>
+<a href="physics.html">Physics</a>
+<a href="console.html">Robot console & masters</a>
+<a href="training.html" aria-current="page">Training & assessment</a>
+<a href="teaching.html">Teaching layer</a>
+<a href="streaming.html">Streaming & XR</a>
+<a href="autonomy.html">Autonomy data</a>
+
+</div></nav>
+<main class="wrap">
+<header class="page">
+<h1>Training and assessment</h1>
+<p class="lead">A curriculum from the basic robotic skills to the full cholecystectomy. Every task is scored from what
+the physics logs (time, path, force, errors, safety checks), every attempt can be reviewed, and an instructor sees the
+whole cohort.</p>
+</header>
+
+<figure class="ui"><img src="assets/img/ui_train.jpg" alt="The Train page: the curriculum path from camera navigation to cholecystectomy and the basic-skills cards" loading="lazy"><figcaption>Train: the curriculum path, robotic skills to cholecystectomy, each module unlocked by passing the one before (demo account).</figcaption></figure>
+
+<h2>Practice, Train, Assess</h2>
+<ul class="facts">
+<li><b>Practice</b>: free play in any procedure or skills scene; nothing is scored.</li>
+<li><b>Train</b>: the curriculum, with guided steps. A module is passed after the required number of proficient
+attempts in a row (two by default); the next module then unlocks.</li>
+<li><b>Assess</b>: one scored attempt without guidance, as in an exam; the report and its PDF follow.</li>
+</ul>
+<div class="grid2"><figure class="ui"><img src="assets/img/ui_practice.jpg" alt="The Practice page listing procedures and basic skills" loading="lazy"><figcaption>Practice: procedures and basic skills, free play.</figcaption></figure><figure class="ui"><img src="assets/img/brief_chole.jpg" alt="The cholecystectomy task brief: a sketch of the steps, what to do, controls, how to pass and common mistakes" loading="lazy"><figcaption>Every task opens with its brief: what to do, the controls on your device, how to pass, the common mistakes.</figcaption></figure></div>
+
+<h2>The curriculum</h2>
+<div class="tw"><table>
+<tr><th>Stage</th><th>Tasks</th></tr>
+<tr><td>Basic skills</td><td>Camera navigation with the 30° laparoscope, clutching, peg transfer with hand-over,
+energy control, pattern cutting, suturing. Each with proficiency criteria: done, time, drops, peak grasp force,
+misapplied energy.</td></tr>
+<tr><td>Step cases</td><td>Six short scored cases, one per step of the cholecystectomy: expose the gallbladder, dissect
+the triangle, critical view of safety, clip the artery and duct, divide them, take the gallbladder off its bed.</td></tr>
+<tr><td>Procedures</td><td>The laparoscopic cholecystectomy (four anatomies of Calot's triangle, a double cystic
+artery, three patients) and the appendectomy, scored.</td></tr>
+</table></div>
+<p class="note">The benchmarks are provisional: until enough expert sessions are recorded, the thresholds are the
+simulator's defaults, not validated proficiency levels.</p>
+
+<h2>Step cases and adverse events</h2>
+<p>Each step case starts from a state the simulator makes with its own operators in the physics process (the fat
+half cleared, the critical view reached, the clips placed), in under 3 seconds. A case may carry a scripted adverse
+event: in one, the clips slip off the cystic artery's stump 3 s after its division. A bite pinches the bleeding stump,
+a clip stops it; the score counts the time to control the bleed, the blood lost and blind clips.</p>
+<figure><video src="assets/vid/v_bleed.mp4" poster="assets/vid/v_bleed.jpg" muted autoplay loop playsinline preload="none" aria-label="Step case with an adverse event: the clips slip off the cystic artery stump, which is grasped and clipped"></video><figcaption>The step case "Control a cystic artery bleed": the clips slip off the stump after its division; grasp, clip, aspirate (2.5× speed).</figcaption></figure>
+
+<h2>Review of an attempt</h2>
+<p>A scored attempt lands on its review first: the score, the mistakes by severity, the time and the steps done; the
+recording with a timeline of the steps, the score as it went and a marker for each mistake. A click anywhere on the
+timeline moves there; each mistake says what happened, why it matters, how to avoid it and the points it cost.</p>
+<div class="grid2"><figure class="ui"><img src="assets/img/ui_review.jpg" alt="The review of an attempt: score, mistakes, time, steps done and where the points went" loading="lazy"><figcaption>The review: score, mistakes by severity, time, steps, and where the points went step by step.</figcaption></figure><figure class="ui"><img src="assets/img/ui_review_timeline.jpg" alt="The review's timeline with steps, score and mistake markers, and the list of mistakes" loading="lazy"><figcaption>Its timeline and the mistakes: click anywhere to move there.</figcaption></figure></div>
+
+<h2>The instructor's cohort view</h2>
+<p>For admin accounts: a table of trainees by case (best score, passed, attempts, last date), trends over attempts
+against the cohort's median, the commonest mistakes per case, a date range, and CSV downloads of the table and of
+every attempt.</p>
+<div class="grid2"><figure class="ui"><img src="assets/img/ui_instructor.jpg" alt="The instructor overview: date range, totals and the cohort table of trainees by case" loading="lazy"><figcaption>The cohort table, trainee by case (demo accounts, scripted attempts).</figcaption></figure><figure class="ui"><img src="assets/img/ui_instructor_trends.jpg" alt="The commonest mistakes per case, the curriculum progress and the attempts list" loading="lazy"><figcaption>The commonest mistakes, curriculum progress and every attempt with its review and report.</figcaption></figure></div>
+<div class="next"><a class="btn" href="console.html">← Robot console & masters</a><a class="btn" href="teaching.html">Teaching layer →</a></div>
+<footer>© 2026 INSPIRE Lab, Indian Institute of Technology Madras. Not a medical device; for research and education only.
+Every image and video on this site comes from the simulator and its pipeline, with the release's procedural tissue look, on public
+CT data (TotalSegmentator dataset, CC BY 4.0) and demo accounts.</footer>
+</main>
+<script src="assets/site.js"></script>
+</body>
+</html>

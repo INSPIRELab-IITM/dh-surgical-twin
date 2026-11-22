@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Autonomy data · DH Surgical Twin</title>
+<meta name="description" content="A Gym-style environment on the simulator's own physics, with laparoscope and wrist cameras, three action forms, language annotations and datasets in the LeRobot v2.1 layout.">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('dh-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body>
+<div class="top"><div class="wrap"><a class="brand" href="index.html">DH Surgical Twin<small>Digital Human · INSPIRE Lab, IIT Madras</small></a>
+<button class="theme" id="theme" type="button" aria-label="Switch light or dark theme">Dark</button></div></div>
+<nav class="tabs" aria-label="Sections"><div class="wrap">
+<a href="index.html">Overview</a>
+<a href="pipeline.html">CT to scene</a>
+<a href="patients.html">Your own patient</a>
+<a href="physics.html">Physics</a>
+<a href="console.html">Robot console & masters</a>
+<a href="training.html">Training & assessment</a>
+<a href="teaching.html">Teaching layer</a>
+<a href="streaming.html">Streaming & XR</a>
+<a href="autonomy.html" aria-current="page">Autonomy data</a>
+
+</div></nav>
+<main class="wrap">
+<header class="page">
+<h1>Autonomy data</h1>
+<p class="lead">The simulator as a source of training data for learning-based surgical autonomy: reinforcement
+learning from images, imitation learning, vision-language-action models. A policy acts through the master protocol,
+under the same limits as a human master, on the same SOFA physics.</p>
+</header>
+
+<figure><video src="assets/vid/v_autonomy.mp4" poster="assets/vid/v_autonomy.jpg" muted autoplay loop playsinline preload="none" aria-label="Three synchronised camera views from recorded episodes: the laparoscope, the left wrist and the right wrist, while the left grasper lifts the gallbladder"></video><figcaption>Four recorded episodes of <code>gallbladder_retract</code> by the scripted expert (three with light randomisation), exactly as stored in the dataset: the laparoscope, the left wrist camera and the right wrist camera, 400 px each, from the native renderer.</figcaption></figure>
+
+<h2>The environment</h2>
+<pre><code>import dh                                   # before SOFA, as every entry point
+from dh.autonomy import SurgeryEnv
+env = SurgeryEnv(task="gallbladder_retract", image_size=(224, 224))
+obs, info = env.reset(seed=0, options={"randomise": "light"})
+obs, reward, terminated, truncated, info = env.step(env.action_space.sample())</code></pre>
+<ul class="facts">
+<li><b>The product's simulator in the caller's process</b>: the same Simulation, scene and physics as the portal, with
+no web server and no page; the Gymnasium API.</li>
+<li><b>A policy is one more master.</b> Its action goes through the console as a human master's does; nothing in the
+environment computes a force or writes a position.</li>
+<li><b>A fixed step</b>: by default 2 × 1/60 s physics steps per control step, 30 Hz control at 60 Hz physics, on a
+simulated clock, so an episode does not depend on how fast the machine runs it.</li>
+<li><b>Instability is a failure</b>: a rollback or a reset by the simulator's own guards ends the episode.</li>
+</ul>
+
+<h2>Observations and actions</h2>
+<div class="grid2">
+<div class="card"><h3>Observations</h3><p>Images from the laparoscope (a stereo pair optional) and a camera at each
+instrument's wrist, rendered by the native renderer as a surgeon sees them; a 14-value state (each tip's pose in the
+laparoscope's frame and its jaw). The forces, the step's language and privileged state are in <code>info</code>.</p></div>
+<div class="card"><h3>Actions</h3><p>Seven values per hand in three modes: increments in the laparoscope's frame
+(the default), absolute targets, or the master device's own pose. Every step is recorded in all three forms, so a
+learner picks one and an episode replays exactly.</p></div>
+</div>
+
+<h2>Tasks, language, randomisation</h2>
+<ul class="facts">
+<li>Two tasks are built: <code>reach</code> on the clutch-and-reach board and <code>gallbladder_retract</code> in the
+cholecystectomy with every abdominal organ live, each with success, failure, reward and a scripted expert.</li>
+<li>Language on three levels on every step: the task's instruction, the segment being done, and a correction where
+the expert recovers.</li>
+<li>Randomisation per episode (camera, light, grasp point and more), recovery episodes from perturbed states, and
+exact replay.</li>
+</ul>
+
+<h2>The dataset</h2>
+<p><code>python -m dh.autonomy collect</code> writes the LeRobot v2.1 layout: one video per camera and episode, the
+state, the grasp forces, the three action forms, reward and success, recovery flags and language annotations, plus a
+per-episode record of the simulator's setup. An RLDS view of an episode is provided for RLDS-based learners.</p>
+<pre><code>meta/info.json  tasks.jsonl  episodes.jsonl  episodes_stats.jsonl
+meta/modality.json  episodes_sim.jsonl  sim.json
+data/chunk-000/episode_000000.parquet
+videos/chunk-000/observation.images.&lt;camera&gt;/episode_000000.mp4</code></pre>
+<div class="next"><a class="btn" href="streaming.html">← Streaming & XR</a></div>
+<footer>© 2026 INSPIRE Lab, Indian Institute of Technology Madras. Not a medical device; for research and education only.
+Every image and video on this site comes from the simulator and its pipeline, with the release's procedural tissue look, on public
+CT data (TotalSegmentator dataset, CC BY 4.0) and demo accounts.</footer>
+</main>
+<script src="assets/site.js"></script>
+</body>
+</html>
