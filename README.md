@@ -1,4 +1,4 @@
-# DH Surgical Twin: a patient-specific, real-time surgical simulator
+# DH (Digital Human) Surgical Twin: a patient-specific, real-time surgical simulator
 
 **Project page: https://inspirelab-iitm.github.io/dh-surgical-twin/**
 
