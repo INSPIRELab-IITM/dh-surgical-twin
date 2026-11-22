@@ -73,7 +73,10 @@ tissue look (no real-video textures are part of the release).
   - Allowed: research, teaching and personal study. Universities, hospitals and public research organisations may use
     and modify it for those purposes.
   - Not allowed without a separate **commercial licence** from IIT Madras: any commercial use, such as a product, a
-    paid service, or use within a company's commercial work. Contact by email for licensing: niravpatel@smail.iitm.ac.in, nirav.robotics@gmail.com.
+    paid service, or use within a company's commercial work. Contact by email for licensing (addresses as an image):
+
+    <img src="assets/contact.png" alt="Licensing contact e-mail addresses (image)" height="68">
+
   - The licence's Required Notice: Copyright (c) 2026 INSPIRE Lab, Indian Institute of Technology Madras.
 - **LGPL-2.1, as SOFA.** `third_party/sofacuda_patches/` (the changes to SOFA v25.12's SofaCUDA) is derived from
   SOFA, so its own `LICENSE` file (LGPL-2.1) applies instead of PolyForm.
