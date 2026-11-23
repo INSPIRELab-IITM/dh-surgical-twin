@@ -73,3 +73,19 @@ a{color:var(--accent)}
   nav.tabs a:hover{background:var(--card);border:none}
   nav.tabs a[aria-current="page"]{background:var(--accent);color:#fff}
 }
+
+/* the burger (below 1100 px): the sections drop down under the header; none of it on wide screens */
+.burger{display:none;width:40px;height:36px;border:1px solid var(--line);border-radius:8px;background:var(--bg);cursor:pointer;
+        padding:9px 10px;margin-right:8px;flex-direction:column;justify-content:space-between}
+.burger span{display:block;height:2px;border-radius:2px;background:var(--fg);transition:transform .2s,opacity .2s}
+@media (max-width:1099px){
+  .burger{display:inline-flex}
+  nav.tabs{display:none;position:sticky;top:0;z-index:5;box-shadow:0 6px 18px rgba(0,0,0,.12)}
+  body.nav-open nav.tabs{display:block}
+  nav.tabs .wrap{flex-direction:column;flex-wrap:nowrap;gap:2px}
+  nav.tabs a{border:none;border-radius:8px;background:none;padding:10px 12px}
+  nav.tabs a[aria-current="page"]{background:var(--accent);color:#fff}
+  body.nav-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  body.nav-open .burger span:nth-child(2){opacity:0}
+  body.nav-open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+}
